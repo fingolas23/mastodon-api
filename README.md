@@ -1,7 +1,4 @@
-# mastodon-api
-Several Mastodon API scripts
+Script to get all accounts a specific Mastodon-account is following and write some data to them in a html-table 
 
 
-### Scripts
-Script to get through API followers and followed for a specific account on Mastodon - [masto-get-followers-following.php](https://github.com/to3k/mastodon-api/blob/main/masto-get-followers-following.php)
-![Script result view](https://raw.githubusercontent.com/to3k/mastodon-api/main/masto-get-followers-following.png "Script result view")
+This is heavily based on: [masto-get-followers-following.php](https://github.com/to3k/mastodon-api/blob/main/masto-get-followers-following.php)
