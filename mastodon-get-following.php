@@ -4,7 +4,7 @@
 
 <form action="" method="GET" name="form">
     <input type="text" name="url" placeholder="Profile URL..." value="<?php echo $url; ?>" size="100"><br><br>
-    <button type="submit">Get Followers/Following</button>
+    <button type="submit">Get Following</button>
 </form>
 
 <?php
@@ -53,7 +53,7 @@
 
     // FUNCTIONS
     function HeaderLink($curl, $header_line) {
-        if(str_contains($header_line, "link:"))
+         if(str_contains($header_line, "link:") || str_contains($header_line, "Link:"))
         {
             $GLOBALS['link'] = $header_line;
         }
@@ -87,10 +87,12 @@
                 "acct" => $follow['acct'],  
                 "display_name" => $follow['display_name'],  
                 "url" => $follow['url'],  
-                "avatar" => $follow['avatar'],  
                 "followers_count" => $follow['followers_count'],  
                 "following_count" => $follow['following_count'],  
-                "statuses_count" => $follow['statuses_count']
+                "statuses_count" => $follow['statuses_count'],
+				"last_status_at" => $follow['last_status_at'],
+				"created_at" => $follow['created_at'],
+				"note" => $follow['note']
             );
             $followers_counter++;
         }
@@ -120,10 +122,12 @@
                     "acct" => $follow['acct'],  
                     "display_name" => $follow['display_name'],  
                     "url" => $follow['url'],  
-                    "avatar" => $follow['avatar'],  
                     "followers_count" => $follow['followers_count'],  
                     "following_count" => $follow['following_count'],  
-                    "statuses_count" => $follow['statuses_count']
+                    "statuses_count" => $follow['statuses_count'],
+					"last_status_at" => $follow['last_status_at'],
+					"created_at" => $follow['created_at'],
+					"note" => $follow['note']
                 );
                 $followers_counter++;
             }
@@ -134,6 +138,7 @@
 
 
     // GET LIST OF FOLLOWING
+	sleep(1);
     $following_counter = 0;
     $following = array();
     $following_ids = array();
@@ -159,10 +164,12 @@
                 "acct" => $follow['acct'],  
                 "display_name" => $follow['display_name'],  
                 "url" => $follow['url'],  
-                "avatar" => $follow['avatar'],  
                 "followers_count" => $follow['followers_count'],  
                 "following_count" => $follow['following_count'],  
-                "statuses_count" => $follow['statuses_count']
+                "statuses_count" => $follow['statuses_count'],
+				"last_status_at" => $follow['last_status_at'],
+				"created_at" => $follow['created_at'],
+				"note" => $follow['note']
             );
             $following_counter++;
         }
@@ -192,10 +199,12 @@
                     "acct" => $follow['acct'],  
                     "display_name" => $follow['display_name'],  
                     "url" => $follow['url'],  
-                    "avatar" => $follow['avatar'],  
                     "followers_count" => $follow['followers_count'],  
                     "following_count" => $follow['following_count'],  
-                    "statuses_count" => $follow['statuses_count']
+                    "statuses_count" => $follow['statuses_count'],
+					"last_status_at" => $follow['last_status_at'],
+				    "created_at" => $follow['created_at'],
+					"note" => $follow['note']
                 );
                 $following_counter++;
             }
@@ -206,11 +215,10 @@
 ?>
 
 <h1>Followers</h1>
-<b>Number of followers found:</b> <?php echo $followers_counter; ?><br><br>
+<b>Number of followers found:</b> <?php echo $following_counter; ?><br><br>
 <table>
     <tr>
         <th>Lp.</th>
-        <th>Avatar</th>
         <th>ID</th>
         <th>Handle</th>
         <th>Name</th>
@@ -218,41 +226,9 @@
         <th>Following</th>
         <th>Toots</th>
         <th>URL</th>
-    </tr>
-<?php
-    $i = 1;
-    foreach($followers as $follow)
-    {
-        echo "<tr>";
-        echo "<td>".$i."</td>";
-        echo "<td><img src=\"".$follow['avatar']."\" style=\"max-width: 50px; max-height: 50px;\" /></td>";
-        echo "<td>".$follow['id']."</td>";
-        echo "<td>".$follow['acct']."</td>";
-        echo "<td>".$follow['display_name']."</td>";
-        echo "<td>".$follow['followers_count']."</td>";
-        echo "<td>".$follow['following_count']."</td>";
-        echo "<td>".$follow['statuses_count']."</td>";
-        echo "<td><a href=\"".$follow['url']."\">".$follow['url']."</a></td>";
-        echo "</tr>";
-
-        $i++;
-    }
-?>
-</table>
-
-<h1>Following</h1>
-<b>Number of following found:</b> <?php echo $following_counter; ?><br><br>
-<table>
-    <tr>
-        <th>Lp.</th>
-        <th>Avatar</th>
-        <th>ID</th>
-        <th>Handle</th>
-        <th>Name</th>
-        <th>Followers</th>
-        <th>Following</th>
-        <th>Toots</th>
-        <th>URL</th>
+		<th>Last Status</th>
+		<th>Created at</th>
+		<th>Note</th>			
     </tr>
 <?php
     $i = 1;
@@ -260,7 +236,6 @@
     {
         echo "<tr>";
         echo "<td>".$i."</td>";
-        echo "<td><img src=\"".$follow['avatar']."\" style=\"max-width: 50px; max-height: 50px;\" /></td>";
         echo "<td>".$follow['id']."</td>";
         echo "<td>".$follow['acct']."</td>";
         echo "<td>".$follow['display_name']."</td>";
@@ -268,9 +243,54 @@
         echo "<td>".$follow['following_count']."</td>";
         echo "<td>".$follow['statuses_count']."</td>";
         echo "<td><a href=\"".$follow['url']."\">".$follow['url']."</a></td>";
+		echo "<td>".$follow['last_status_at']."</td>";
+		echo "<td>".$follow['created_at']."</td>";
+		echo "<td>".$follow['note']."</td>";
         echo "</tr>";
 
         $i++;
     }
+	$random_file = fopen("output.html", "w");
+		fwrite($random_file, "<table>");
+		fwrite($random_file, "<tr>");
+        fwrite($random_file, "<th>Lp.</th>");
+        fwrite($random_file, "<th>ID</th>");
+        fwrite($random_file, "<th>Handle</th>");
+        fwrite($random_file, "<th>Name</th>");
+        fwrite($random_file, "<th>Followers</th>");
+        fwrite($random_file, "<th>Following</th>");
+        fwrite($random_file, "<th>Toots</th>");
+        fwrite($random_file, "<th>URL</th>");
+		fwrite($random_file, "<th>Last Status</th>");
+		fwrite($random_file, "<th>Created at</th>");
+		fwrite($random_file, "<th>Note</th>");	
+		fwrite($random_file, "</tr>");
+	
+	
+	
+	
+    $i = 1;
+    foreach($following as $follow)
+    {
+		 fwrite($random_file, "<tr>");
+         fwrite($random_file, "<td>".$i."</td>");
+         fwrite($random_file, "<td>".$follow['id']."</td>");
+         fwrite($random_file, "<td>".$follow['acct']."</td>");
+         fwrite($random_file, "<td>".$follow['display_name']."</td>");
+         fwrite($random_file, "<td>".$follow['followers_count']."</td>");
+         fwrite($random_file, "<td>".$follow['following_count']."</td>");
+         fwrite($random_file, "<td>".$follow['statuses_count']."</td>");
+         fwrite($random_file, "<td><a href=\"".$follow['url']."\">".$follow['url']."</a></td>");
+		 fwrite($random_file, "<td>".$follow['last_status_at']."</td>");
+		 fwrite($random_file, "<td>".$follow['created_at']."</td>");
+		 fwrite($random_file, "<td>".$follow['note']."</td>");
+         fwrite($random_file, "</tr>");
+
+        $i++;
+	
+		 
+    }
+	fwrite($random_file, "</table>");
+	fclose($random_file);
 ?>
 </table>
