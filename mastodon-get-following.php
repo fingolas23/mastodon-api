@@ -4,7 +4,7 @@
 
 <form action="" method="GET" name="form">
     <input type="text" name="url" placeholder="Profile URL..." value="<?php echo $url; ?>" size="100"><br><br>
-    <button type="submit">Get Following</button>
+    <button type="submit">Get Followers/Following</button>
 </form>
 
 <?php
@@ -98,7 +98,12 @@
         }
     }
     preg_match("(link: <(.+?)>; rel=\"next\", <.+?>; rel=\"prev\")is", $GLOBALS['link'], $temp);
-    $api_url = $temp[1];
+    
+	if ($temp[1] && $api_url !== $temp[1]) {
+		$api_url = $temp[1];
+	} else {
+		$api_url = null;
+	}
 
     while(!empty($api_url))
     {
@@ -133,7 +138,13 @@
             }
         }
         preg_match("(link: <(.+?)>; rel=\"next\", <.+?>; rel=\"prev\")is", $GLOBALS['link'], $temp);
-        $api_url = $temp[1];
+
+	if ($temp[1] && $api_url !== $temp[1]) {
+		$api_url = $temp[1];
+	} else {
+		$api_url = null;
+	}
+	
     }
 
 
@@ -175,7 +186,12 @@
         }
     }
     preg_match("(link: <(.+?)>; rel=\"next\", <.+?>; rel=\"prev\")is", $GLOBALS['link'], $temp);
-    $api_url = $temp[1];
+
+	if ($temp[1] && $api_url !== $temp[1]) {
+		$api_url = $temp[1];
+	} else {
+		$api_url = null;
+	}
 
     while(!empty($api_url))
     {
@@ -210,7 +226,13 @@
             }
         }
         preg_match("(link: <(.+?)>; rel=\"next\", <.+?>; rel=\"prev\")is", $GLOBALS['link'], $temp);
-        $api_url = $temp[1];
+
+	if ($temp[1] && $api_url !== $temp[1]) {
+		$api_url = $temp[1];
+	} else {
+		$api_url = null;
+	}
+	
     }
 ?>
 
